@@ -1,6 +1,16 @@
-from flask import Flask
-app = Flask(__name__)
+from telegram.ext import Updater, CommandHandler
+import os
 
-@app.route("/")
-def hello():
-    return "Hello World!"
+
+def hello(bot, update):
+    update.message.reply_text(
+        'Hello {}'.format(update.message.from_user.first_name)
+    )
+
+
+updater = Updater(os.environ['TELEGRAM_BOT_TOKEN'])
+
+updater.dispatcher.add_handler(CommandHandler('hello', hello))
+
+updater.start_polling()
+updater.idle()
