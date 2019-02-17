@@ -1,8 +1,10 @@
 import os
 
 from telegram.ext import Updater, CommandHandler, RegexHandler
+from string import Template
 
-from dices import parse, calculate
+from dices import parse, calculate, InvalidFormat, InvalidDicesCount, InvalidFacesCount, minimal_dices_count, \
+    maximal_dices_count, minimal_faces_count, maximal_faces_count
 
 
 def command_help(_, update):
@@ -12,13 +14,25 @@ def command_help(_, update):
 
 
 def roll_dices(bot, update):
-    dices = parse(update.message.text)
-    if not tuple:
-        return command_help(bot, update)
+    try:
+        dices = parse(update.message.text)
 
-    result = calculate(dices)
+        result = calculate(dices)
+        update.message.reply_text(str(result))
 
-    update.message.reply_text(str(result))
+    except InvalidFormat as exc:
+        update.message.reply_text('Error: Invalid format %s' % exc.format)
+
+    except InvalidDicesCount as exc:
+        update.message.reply_text(
+            'Error: Invalid dices count %d (min %d, max %d)' % (exc.dices, minimal_dices_count, maximal_dices_count))
+
+    except InvalidFacesCount as exc:
+        update.message.reply_text(
+            'Error: Invalid faces count %d (min %d, max %d)' % (exc.faces, minimal_faces_count, maximal_faces_count))
+
+    except:
+        update.message.reply_text('Error: Unknown')
 
 
 updater = Updater(os.environ['TELEGRAM_BOT_TOKEN'])

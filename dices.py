@@ -1,28 +1,58 @@
 import re
 import numpy
 
-from typing import Optional, Tuple
+from typing import Tuple
+
+minimal_dices_count = 1
+maximal_dices_count = 100
+
+minimal_faces_count = 2
+maximal_faces_count = 1000000
 
 
-def parse(string: str) -> Optional[Tuple[int, int, int]]:
+class InvalidFormat(Exception):
+    format = ''
+
+    def __init__(self, format):
+        self.format = format
+
+
+class InvalidDicesCount(Exception):
+    dices = 0
+
+    def __init__(self, dices):
+        self.dices = dices
+
+
+class InvalidFacesCount(Exception):
+    faces = 0
+
+    def __init__(self, faces):
+        self.faces = faces
+
+
+def parse(string: str) -> Tuple[int, int, int]:
     regex = r'^(\d+)[dD](\d+)([+-]\d+)?$'
     params = re.match(regex, string.replace(' ', ''))
 
     if not params:
-        return None
+        raise InvalidFormat(string)
 
     args = params.groups()
 
-    (count_, faces_, modifier_) = args
+    (dices_, faces_, modifier_) = args
 
-    count = int(count_)
+    dices = int(dices_)
     faces = int(faces_)
     modifier = int(modifier_) if modifier_ else 0
 
-    if count <= 0 or faces <= 0:
-        return None
+    if dices < minimal_dices_count or maximal_dices_count < dices:
+        raise InvalidDicesCount(dices)
 
-    return count, faces, modifier
+    if faces < minimal_faces_count or maximal_faces_count < faces:
+        raise InvalidFacesCount(faces)
+
+    return dices, faces, modifier
 
 
 def calculate(dices: Tuple[int, int, int]) -> int:

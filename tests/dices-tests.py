@@ -1,55 +1,80 @@
 from unittest import TestCase, main
 from unittest.mock import patch
 
-from dices import parse, calculate
+from dices import parse, calculate, InvalidFormat, InvalidDicesCount, InvalidFacesCount, minimal_dices_count, \
+    maximal_dices_count, minimal_faces_count, maximal_faces_count
 
 
 class TestParse(TestCase):
     def test_fail_for_empty_string(self):
-        self.assertIsNone(parse(''))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('')
 
     def test_fail_without_count(self):
-        self.assertIsNone(parse('d2'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('d2')
 
     def test_fail_if_count_is_not_number(self):
-        self.assertIsNone(parse('x'))
-        self.assertIsNone(parse('2x'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('x')
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2x')
 
     def test_fail_without_D(self):
-        self.assertIsNone(parse('2'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2')
 
     def test_fail_without_faces(self):
-        self.assertIsNone(parse('2d'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d')
 
     def test_fail_if_faces_is_not_number(self):
-        self.assertIsNone(parse('2dx'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2dx')
 
     def test_fail_without_modifier_sign(self):
-        self.assertIsNone(parse('2d4x'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d4x')
 
     def test_fail_if_modifier_is_not_number(self):
-        self.assertIsNone(parse('2d4+x'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d4+x')
 
     def test_fail_if_there_is_tail(self):
-        self.assertIsNone(parse('2d4+6x'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d4+6x')
 
     def test_fail_for_count_with_sign(self):
-        self.assertIsNone(parse('+2d4+6'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('+2d4+6')
 
     def test_fail_for_negative_count(self):
-        self.assertIsNone(parse('-2d4+6'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('-2d4+6')
 
     def test_fail_for_faces_with_sign(self):
-        self.assertIsNone(parse('2d+4+6'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d+4+6')
 
     def test_fail_for_negative_faces(self):
-        self.assertIsNone(parse('2d+4+6'))
+        with self.assertRaises(InvalidFormat):
+            _ = parse('2d+4+6')
 
-    def test_fail_for_zero_count(self):
-        self.assertIsNone(parse('0d4+6'))
+    def test_fail_for_minimal_count(self):
+        with self.assertRaises(InvalidDicesCount):
+            _ = parse(str(minimal_dices_count - 1) + 'd4+6')
 
-    def test_fail_for_zero_faces(self):
-        self.assertIsNone(parse('2d0+6'))
+    def test_fail_for_maximal_count(self):
+        with self.assertRaises(InvalidDicesCount):
+            _ = parse(str(maximal_dices_count + 1) + 'd4+6')
+
+    def test_fail_for_minimal_faces(self):
+        with self.assertRaises(InvalidFacesCount):
+            parse('2d' + str(minimal_faces_count - 1) + '+6')
+
+    def test_fail_for_maximal_faces(self):
+        with self.assertRaises(InvalidFacesCount):
+            parse('2d' + str(maximal_faces_count + 1) + '+6')
 
     def test_ignore_spaces(self):
         (count, faces, modifier) = parse(' 2 d 4 + 6 ')
