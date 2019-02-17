@@ -1,12 +1,8 @@
 import os
-import re
-
-# noinspection PyPackageRequirements
-import sys
 
 from telegram.ext import Updater, CommandHandler, RegexHandler
 
-from dices import parse
+from dices import parse, calculate
 
 
 def command_help(_, update):
@@ -16,17 +12,13 @@ def command_help(_, update):
 
 
 def roll_dices(bot, update):
-    tuple = parse(update.message.text)
+    dices = parse(update.message.text)
     if not tuple:
         return command_help(bot, update)
 
-    (count, faces, modifier) = tuple
+    result = calculate(dices)
 
-    update.message.reply_text(
-        "count: " + str(count) + ", " +
-        "faces: " + str(faces) + ", " +
-        "modifier: " + str(modifier)
-    )
+    update.message.reply_text(str(result))
 
 
 updater = Updater(os.environ['TELEGRAM_BOT_TOKEN'])
