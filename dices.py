@@ -1,5 +1,5 @@
 import re
-import random
+import numpy
 
 from typing import Optional, Tuple
 
@@ -30,7 +30,7 @@ def calculate(dices: Tuple[int, int, int]) -> int:
 
     result = 0
     for _ in range(0, count):
-        result += random.randint(1, faces)
+        result += numpy.random.randint(1, faces)
 
     result += modifier
 
