@@ -32,7 +32,7 @@ class InvalidFacesCount(Exception):
 
 
 def parse(string: str) -> Tuple[int, int, int]:
-    regex = r'^(\d+)[dD](\d+)([+-]\d+)?$'
+    regex = r'^(\d*)[dD](\d+)([+-]\d+)?$'
     params = re.match(regex, string.replace(' ', ''))
 
     if not params:
@@ -42,7 +42,7 @@ def parse(string: str) -> Tuple[int, int, int]:
 
     (dices_, faces_, modifier_) = args
 
-    dices = int(dices_)
+    dices = int(dices_) if len(dices_) > 0 else 1
     faces = int(faces_)
     modifier = int(modifier_) if modifier_ else 0
 

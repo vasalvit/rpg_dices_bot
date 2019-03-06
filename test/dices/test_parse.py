@@ -9,10 +9,6 @@ class TestParse(TestCase):
         with self.assertRaises(InvalidFormat):
             _ = parse('')
 
-    def test_fail_without_count(self):
-        with self.assertRaises(InvalidFormat):
-            _ = parse('d2')
-
     def test_fail_if_count_is_not_number(self):
         with self.assertRaises(InvalidFormat):
             _ = parse('x')
@@ -80,6 +76,10 @@ class TestParse(TestCase):
         self.assertEqual(2, count)
         self.assertEqual(4, faces)
         self.assertEqual(6, modifier)
+
+    def test_use_1_without_count(self):
+        (count, _, _) = parse('d4')
+        self.assertEqual(1, count)
 
     def test_success_with_d(self):
         (count, faces, modifier) = parse('2d4+6')
