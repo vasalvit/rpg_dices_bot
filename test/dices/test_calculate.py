@@ -61,37 +61,55 @@ class TestCalculate(TestCase):
     def test_minimal_value_for_1d2(self, mock_randint):
         mock_randint.side_effect = lambda a, _: a
 
-        self.assertEqual(self.dices_1d2[0] * 1 + self.dices_1d2[2], calculate(self.dices_1d2))
+        value, minimal, _ = calculate(self.dices_1d2)
+
+        self.assertEqual(self.dices_1d2[0] * 1 + self.dices_1d2[2], value)
+        self.assertEqual(self.dices_1d2[0] * 1 + self.dices_1d2[2], minimal)
 
     @patch('numpy.random.randint')
     def test_maximal_value_for_1d2(self, mock_randint):
         mock_randint.side_effect = lambda _, b: b
 
-        self.assertEqual(self.dices_1d2[0] * 2 + self.dices_1d2[2], calculate(self.dices_1d2))
+        value, _, maximal = calculate(self.dices_1d2)
+
+        self.assertEqual(self.dices_1d2[0] * 2 + self.dices_1d2[2], value)
+        self.assertEqual(self.dices_1d2[0] * 2 + self.dices_1d2[2], maximal)
 
     @patch('numpy.random.randint')
     def test_minimal_value_for_2d4(self, mock_randint):
         mock_randint.side_effect = lambda a, _: a
 
-        self.assertEqual(self.dices_2d4[0] * 1 + self.dices_2d4[2], calculate(self.dices_2d4))
+        value, minimal, _ = calculate(self.dices_2d4)
+
+        self.assertEqual(self.dices_2d4[0] * 1 + self.dices_2d4[2], value)
+        self.assertEqual(self.dices_2d4[0] * 1 + self.dices_2d4[2], minimal)
 
     @patch('numpy.random.randint')
     def test_maximal_value_for_2d4(self, mock_randint):
         mock_randint.side_effect = lambda _, b: b
 
-        self.assertEqual(self.dices_2d4[0] * 4 + self.dices_2d4[2], calculate(self.dices_2d4))
+        value, _, maximal = calculate(self.dices_2d4)
+
+        self.assertEqual(self.dices_2d4[0] * 4 + self.dices_2d4[2], value)
+        self.assertEqual(self.dices_2d4[0] * 4 + self.dices_2d4[2], maximal)
 
     @patch('numpy.random.randint')
     def test_minimal_value_for_3d6(self, mock_randint):
         mock_randint.side_effect = lambda a, _: a
 
-        self.assertEqual(self.dices_3d6[0] * 1 + self.dices_3d6[2], calculate(self.dices_3d6))
+        value, minimal, _ = calculate(self.dices_3d6)
+
+        self.assertEqual(self.dices_3d6[0] * 1 + self.dices_3d6[2], value)
+        self.assertEqual(self.dices_3d6[0] * 1 + self.dices_3d6[2], minimal)
 
     @patch('numpy.random.randint')
     def test_maximal_value_for_3d6(self, mock_randint):
         mock_randint.side_effect = lambda _, b: b
 
-        self.assertEqual(self.dices_3d6[0] * 6 + self.dices_3d6[2], calculate(self.dices_3d6))
+        value, _, maximal = calculate(self.dices_3d6)
+
+        self.assertEqual(self.dices_3d6[0] * 6 + self.dices_3d6[2], value)
+        self.assertEqual(self.dices_3d6[0] * 6 + self.dices_3d6[2], maximal)
 
 
 if __name__ == '__main__':

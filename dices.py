@@ -67,7 +67,7 @@ def parse(string: str) -> Tuple[int, int, int]:
     return dices, faces, modifier
 
 
-def calculate(dices: Tuple[int, int, int]) -> int:
+def calculate(dices: Tuple[int, int, int]) -> Tuple[int, int, int]:
     (count, faces, modifier) = dices
 
     result = 0
@@ -76,4 +76,4 @@ def calculate(dices: Tuple[int, int, int]) -> int:
 
     result += modifier
 
-    return result
+    return [result, count * 1 + modifier, count * faces + modifier]

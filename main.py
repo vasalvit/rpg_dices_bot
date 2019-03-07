@@ -30,8 +30,8 @@ def roll_dices(_, update):
     try:
         dices = parse(update.message.text)
 
-        result = calculate(dices)
-        update.message.reply_text(str(result))
+        value, minimal, maximal = calculate(dices)
+        update.message.reply_text('%d (%d..%d)' % (value, minimal, maximal))
 
     except InvalidFormat as exc:
         update.message.reply_text('Error: Invalid format %s' % exc.format)
