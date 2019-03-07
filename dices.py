@@ -70,10 +70,9 @@ def parse(string: str) -> Tuple[int, int, int]:
 def calculate(dices: Tuple[int, int, int]) -> Tuple[int, int, int]:
     (count, faces, modifier) = dices
 
-    result = 0
-    for _ in range(0, count):
-        result += numpy.random.randint(1, faces)
+    minimal = count * 1 + modifier
+    maximal = count * faces + modifier
 
-    result += modifier
+    result = numpy.random.randint(minimal, maximal)
 
-    return [result, count * 1 + modifier, count * faces + modifier]
+    return [result, minimal, maximal]

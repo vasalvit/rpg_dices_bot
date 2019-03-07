@@ -10,7 +10,7 @@ class TestCalculate(TestCase):
     dices_3d6 = (3, 6, 3)
 
     @patch('numpy.random.randint')
-    def test_should_use_1_and_2_values_for_1d2(self, mock_randint):
+    def test_should_use_min_and_max_for_1d2(self, mock_randint):
         mock_randint.return_value = 1
 
         _ = calculate(self.dices_1d2)
@@ -18,20 +18,20 @@ class TestCalculate(TestCase):
         mock_randint.assert_called_with(1, 2)
 
     @patch('numpy.random.randint')
-    def test_should_use_1_and_4_values_for_2d4(self, mock_randint):
+    def test_should_use_min_and_max_for_2d4(self, mock_randint):
         mock_randint.return_value = 1
 
         _ = calculate(self.dices_2d4)
 
-        mock_randint.assert_called_with(1, 4)
+        mock_randint.assert_called_with(2*1-2, 2*4-2)
 
     @patch('numpy.random.randint')
-    def test_should_use_1_and_6_values_for_3d6(self, mock_randint):
+    def test_should_use_min_and_max_for_3d6(self, mock_randint):
         mock_randint.return_value = 1
 
         _ = calculate(self.dices_3d6)
 
-        mock_randint.assert_called_with(1, 6)
+        mock_randint.assert_called_with(3*1+3, 3*6+3)
 
     @patch('numpy.random.randint')
     def test_should_use_randint_once_for_1d(self, mock_randint):
@@ -42,20 +42,20 @@ class TestCalculate(TestCase):
         self.assertEqual(1, mock_randint.call_count)
 
     @patch('numpy.random.randint')
-    def test_should_use_randint_twice_for_2d(self, mock_randint):
+    def test_should_use_randint_once_for_2d(self, mock_randint):
         mock_randint.return_value = 1
 
         _ = calculate(self.dices_2d4)
 
-        self.assertEqual(2, mock_randint.call_count)
+        self.assertEqual(1, mock_randint.call_count)
 
     @patch('numpy.random.randint')
-    def test_should_use_randint_three_times_for_3d(self, mock_randint):
+    def test_should_use_randint_once_for_3d(self, mock_randint):
         mock_randint.return_value = 1
 
         _ = calculate(self.dices_3d6)
 
-        self.assertEqual(3, mock_randint.call_count)
+        self.assertEqual(1, mock_randint.call_count)
 
     @patch('numpy.random.randint')
     def test_minimal_value_for_1d2(self, mock_randint):
